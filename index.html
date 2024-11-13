@@ -105,19 +105,19 @@
     <h2>Daily Work Hours Calculator</h2>
     <form id="workHoursForm">
         <label for="balanceDays">Balance Working Days (max 31):</label>
-        <input type="number" id="balanceDays" placeholder="e.g., 10" required>
+        <input type="number" id="balanceDays"  required>
         <div id="balanceDaysError" class="error"></div>
 
         <label for="currentHours">Current Total Worked Hours:</label>
-        <input type="number" id="currentHours" placeholder="e.g., 90" required>
+        <input type="number" id="currentHours"  required>
         <div id="currentHoursError" class="error"></div>
 
         <label for="currentMinutes">Current Total Worked Minutes (max 59):</label>
-        <input type="number" id="currentMinutes" placeholder="e.g., 30" required>
+        <input type="number" id="currentMinutes"  required>
         <div id="currentMinutesError" class="error"></div>
 
         <label for="totalMonthlyHours">Total Required Work Hours for Month:</label>
-        <input type="number" id="totalMonthlyHours" placeholder="e.g., 180" required>
+        <input type="number" id="totalMonthlyHours"  required>
         <div id="totalMonthlyHoursError" class="error"></div>
 
         <button type="button" onclick="calculateDailyHours()">Calculate</button>
