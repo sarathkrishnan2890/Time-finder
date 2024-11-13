@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Work Hours Calculator</title>
+    <style>
+        /* Base reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f4f8;
+        }
+
+        /* Container styling */
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333333;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 1rem;
+            color: #555555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            color: #ffffff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333333;
+            background-color: #f7faff;
+            padding: 15px;
+            border: 1px solid #007BFF;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Daily Work Hours Calculator</h2>
+    <form id="workHoursForm">
+        <label for="balanceDays">Balance Working Days (max 31):</label>
+        <input type="number" id="balanceDays" placeholder="e.g., 10" required>
+        <div id="balanceDaysError" class="error"></div>
+
+        <label for="currentHours">Current Total Worked Hours:</label>
+        <input type="number" id="currentHours" placeholder="e.g., 90" required>
+        <div id="currentHoursError" class="error"></div>
+
+        <label for="currentMinutes">Current Total Worked Minutes (max 59):</label>
+        <input type="number" id="currentMinutes" placeholder="e.g., 30" required>
+        <div id="currentMinutesError" class="error"></div>
+
+        <label for="totalMonthlyHours">Total Required Work Hours for Month:</label>
+        <input type="number" id="totalMonthlyHours" placeholder="e.g., 180" required>
+        <div id="totalMonthlyHoursError" class="error"></div>
+
+        <button type="button" onclick="calculateDailyHours()">Calculate</button>
+    </form>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function calculateDailyHours() {
+        const balanceDays = parseInt(document.getElementById('balanceDays').value);
+        const currentHours = parseInt(document.getElementById('currentHours').value);
+        const currentMinutes = parseInt(document.getElementById('currentMinutes').value);
+        const totalMonthlyHours = parseInt(document.getElementById('totalMonthlyHours').value);
+
+        // Clear previous error messages
+        document.getElementById('balanceDaysError').textContent = "";
+        document.getElementById('currentHoursError').textContent = "";
+        document.getElementById('currentMinutesError').textContent = "";
+        document.getElementById('totalMonthlyHoursError').textContent = "";
+        document.getElementById('result').textContent = "";
+
+        // Validate inputs
+        let isValid = true;
+
+        if (balanceDays > 31) {
+            document.getElementById('balanceDaysError').textContent = "Balance Working Days cannot be more than 31.";
+            isValid = false;
+        }
+
+        if (currentMinutes > 59) {
+            document.getElementById('currentMinutesError').textContent = "Minutes cannot exceed 59.";
+            isValid = false;
+        }
+
+        if (currentHours >= totalMonthlyHours) {
+            document.getElementById('currentHoursError').textContent = "Current Worked Hours must be less than Total Required Work Hours.";
+            isValid = false;
+        }
+
+        if (!isValid) {
+            return;
+        }
+
+        // Convert current hours and minutes to a decimal format
+        const totalCurrentWorkedHours = currentHours + currentMinutes / 60;
+
+        // Calculate remaining hours
+        const remainingHours = totalMonthlyHours - totalCurrentWorkedHours;
+        const requiredDailyHours = remainingHours / balanceDays;
+
+        // Separate hours and minutes for required daily work
+        const hours = Math.floor(requiredDailyHours);
+        const minutes = Math.round((requiredDailyHours - hours) * 60);
+
+        document.getElementById('result').textContent = 
+            `To meet your target of ${totalMonthlyHours} hours, you need to work approximately ${hours} hours and ${minutes} minutes per day for the remaining ${balanceDays} days.`;
+    }
+</script>
+
+</body>
+</html>
